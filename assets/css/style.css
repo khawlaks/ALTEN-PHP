@@ -1,0 +1,260 @@
+     /* Style global pour le tableau */
+     .data-table {
+         width: 100%;
+         border-collapse: collapse;
+         margin: 20px 0;
+         font-size: 0.9em;
+         min-width: 400px;
+         box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+     }
+
+     /* Style pour les entêtes de colonne */
+     .data-table thead tr {
+         background-color: #007bff;
+         color: #ffffff;
+         text-align: left;
+     }
+
+     .data-table th {
+         padding: 7px 5px;
+     }
+
+     /* Style pour les cellules de données */
+     .data-table tbody tr {
+         border-bottom: 1px solid #dddddd;
+     }
+
+     .data-table tbody tr:nth-of-type(even) {
+         background-color: #f3f3f3;
+     }
+
+     .data-table tbody tr:last-of-type {
+         border-bottom: 2px solid #007bff;
+     }
+
+     .data-table tbody tr.active-row {
+         font-weight: bold;
+         color: #007bff;
+     }
+
+     .data-table tbody td {
+         padding: 12px 15px;
+     }
+
+     .data-table tbody td:first-child,
+     .data-table tbody td:nth-child(2) {
+         font-size: 1.2em;
+     }
+
+     .data-table tbody td:nth-child(6) {
+         padding: 12px 15px;
+         /* Ajustez les valeurs selon vos besoins */
+     }
+
+     /* Style pour les boutons d'actions */
+     .data-table .actions {
+         width: 100px;
+         text-align: center;
+     }
+
+     .data-table .actions .btn {
+         width: 40%;
+         margin: 0.25em;
+     }
+
+     /* Style pour les boutons de la barre d'outils */
+     .card-header button {
+         margin-left: 10px;
+     }
+
+     /* Style pour les inputs de date */
+     .data-table input[type="date"] {
+         width: 100%;
+         padding: 5px;
+         border: 1px solid #dddddd;
+         border-radius: 4px;
+     }
+
+     /* Style pour le select de status */
+     /* .data-table select {
+         width: 100%;
+         padding: 5px;
+         border: 1px solid #dddddd;
+         border-radius: 4px;
+     } */
+
+     /* Style pour les cellules éditable */
+     .data-table td[contenteditable] {
+         padding: 9px 13px;
+         cursor: pointer;
+     }
+
+     .data-table td[contenteditable]:hover {
+         background: #fbfbfb;
+     }
+
+     .data-table td[contenteditable]:focus {
+         background: #dbeefb;
+         outline: none;
+     }
+
+     /* Style pour les icônes de boutons */
+     .data-table .fas {
+         margin-right: 5px;
+     }
+
+     /* Style pour la card */
+     .card {
+         background-color: #fff;
+         padding: 20px;
+         margin-bottom: 20px;
+         box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+     }
+
+     .card-header {
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         margin-bottom: 20px;
+     }
+
+     .header-title {
+         display: flex;
+         align-items: center;
+     }
+
+     .card-title {
+         margin: 0;
+     }
+
+     /* Style pour la responsive */
+     @media screen and (max-width: 600px) {
+
+         .data-table td,
+         .data-table th {
+             padding: 8px;
+         }
+
+         .data-table td:first-child,
+         .data-table td:nth-child(2) {
+             font-size: 1em;
+         }
+     }
+
+     .data-table {
+         width: 100%;
+         border-collapse: collapse;
+         margin: 20px 0;
+         font-size: 0.9em;
+         min-width: 400px;
+         box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+     }
+
+     .data-table thead tr {
+         background-color: #dddddd;
+         color: #ffffff;
+         text-align: left;
+     }
+
+     #actionsTable thead {
+         background-color: #f2f2f2;
+         background-color: #dddddd;
+     }
+
+     #actionsTable th,
+     #actionsTable td {
+         padding: 8px;
+         text-align: left;
+         border-bottom: 1px solid #ddd;
+
+     }
+
+     .button {
+         transition-duration: 0.4s;
+     }
+
+     .button:hover {
+         background-color: #04AA6D;
+         /* Green */
+         color: white;
+     }
+
+     .data-table th {
+         padding: 12px 15px;
+     }
+
+     /* Button styles */
+     .dt-buttons {
+         margin-bottom: 20px;
+     }
+
+     .dt-button {
+         margin-right: 5px;
+         padding: 5px 10px;
+         border: 1px solid #ccc;
+         background-color: #f9f9f9;
+         color: #333;
+         cursor: pointer;
+     }
+
+     .dt-button:hover {
+         background-color: #e9e9e9;
+     }
+
+     /* Scroll collapse styling */
+     .dataTables_wrapper .dataTables_scroll {
+         overflow: auto;
+     }
+
+     /* Paging and info styling */
+     .dataTables_wrapper .dataTables_paginate {
+         margin-top: 10px;
+     }
+
+     .dataTables_wrapper .dataTables_info {
+         margin-top: 10px;
+     }
+
+     /* table.data-table th,
+            table.data-table td {
+                padding: 4px 8px;
+            } */
+
+     tr:nth-child(even) {
+         background-color: #dddddd;
+     }
+
+     thead {
+
+         border-bottom: 2px solid;
+         text-align: center;
+         background-color: white;
+         color: #fff;
+     }
+
+
+     tbody {
+         font-family: 'Nunito', sans-serif;
+     }
+
+     table.data-table {
+         font-size: 18px;
+     }
+
+     select {
+         padding: 5px;
+         border-radius: 5px;
+         border: 1px solid #ccc;
+         background-color: #fff;
+         font-size: 14px;
+     }
+
+     select option:hover {
+         background-color: #f2f2f2;
+     }
+
+     select:focus {
+         outline: none;
+         border-color: #007bff;
+         box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+     }
