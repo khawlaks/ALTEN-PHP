@@ -1,28 +1,22 @@
 <?php
-require_once "../../db/connexion.php";
+include '../../db/connexion.php';  // Connexion à la base de données
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $data = $_POST['data']; //
-
-    $WorkOrderID  = $data['WorkOrderID'];
-    $RessourceID = $data['RessourceID'];
+if (isset($_POST['workOrderID']) && isset($_POST['ressourceID'])) {
+    $workOrderID = $_POST['workOrderID'];
+    $ressourceID = $_POST['ressourceID'];
 
 
-    $sql = "INSERT INTO affectation (WorkOrderID,RessourceID) 
-            VALUES ('$WorkOrderID', '$RessourceID')";
+    $insertSQL = "INSERT INTO affectation (WorkOrderID, RessourceID) VALUES (?, ?)";
+    $insertStmt = $conn->prepare($insertSQL);
+    $insertStmt->bind_param("ii", $workOrderID, $ressourceID);
+    $insertStmt->execute();
+    $insertStmt->close();
 
-
-    //print($sql);die;
-    if ($conn->query($sql) === TRUE) {
-        echo $conn->insert_id; // Return the new record ID
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-    }
+    echo "Affectation ajoutée avec succès!";
+} else {
+   
+    echo "Erreur: Données manquantes pour l'ajout d'affectation.";
 }
 
 
-
-
-
-?>
-
+$conn->close();
