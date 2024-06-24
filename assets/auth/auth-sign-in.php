@@ -1,3 +1,5 @@
+<?php include '../../db/connexion.php';
+?> <!--connexion dans la base de donnees -->
 <!doctype html>
 <html lang="en">
 
@@ -42,13 +44,13 @@
                                                 <div class="row">
                                                     <div class="col-lg-12">
                                                         <div class="floating-label form-group">
-                                                            <input class="floating-input form-control" type="email" placeholder=" ">
+                                                            <input class="floating-input form-control" name="Email" type="email" placeholder=" ">
                                                             <label>Email</label>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-12">
                                                         <div class="floating-label form-group">
-                                                            <input class="floating-input form-control" type="password" placeholder=" ">
+                                                            <input class="floating-input form-control" name="Password"  type="password" placeholder=" ">
                                                             <label>Password</label>
                                                         </div>
                                                     </div>
@@ -62,7 +64,7 @@
                                                         <a href="auth-recoverpw.html" class="text-white float-right">Forgot Password?</a>
                                                     </div>
                                                 </div>
-                                                <button type="submit" class="btn btn-white">Sign In</button>
+                                                <button type="submit" name="submit" class="btn btn-white">Sign In</button>
                                                 <!-- <p class="mt-3">
                                                     Create an Account <a href="auth-sign-up.html" class="text-white text-underline">Sign Up</a>
                                                 </p> -->
@@ -80,6 +82,13 @@
             </div>
         </section>
     </div>
+
+    <?php 
+        if(isset($_POST["submit"])){
+            var_dump($_POST);
+                
+        }
+    ?>
 
     <!-- Backend Bundle JavaScript -->
     <script src="../../assets/js/backend-bundle.min.js"></script>
