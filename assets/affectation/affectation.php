@@ -42,43 +42,25 @@ if (!$resultAffectations) {
 <html lang="en">
 
 <head>
-    <!-- Meta tags -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Title -->
-    <title>Webkit | Affectation </title>
-
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="../../assets/image/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webkit | Affectation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css">
     <link rel="stylesheet" href="../../assets/css/backend-plugin.min.css">
-    <!-- CSS files -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/fontawesome.min.css">
-    <link rel="stylesheet" href="../../assets/css/backend.css?v=1.0.0">
-    <link rel="stylesheet" href="../../assets/vendor/remixicon/fonts/remixicon.css">
-    <link rel="stylesheet" href="../../assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
-    <!-- Calendar -->
-    <link rel="stylesheet" href="../../assets/vendor/tui-calendar/tui-calendar/dist/tui-calendar.css">
-    <link rel="stylesheet" href="../../assets/vendor/tui-calendar/tui-time-picker/dist/tui-time-picker.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/css/bootstrap-tokenfield.min.css">
-
-    <!-- sweetalert2 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <!-- Include DataTables -->
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-
-    <!-- JavaScript files -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/fontawesome.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-
+    <link rel="stylesheet" href="../../assets/css/backend-plugin.min.css">
+    <link rel="stylesheet" href="../../assets/css/backend.css?v=1.0.0">
+    <link rel="stylesheet" href="../../assets/css/style.css">
     <script src="../../assets/js/backend-bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/bootstrap-tokenfield.min.js"></script>
+
 </head>
 
 <body>
@@ -110,12 +92,13 @@ if (!$resultAffectations) {
                                                     <td>
                                                         <?php echo htmlspecialchars($row['WorkOrderNumber']); ?>
                                                     </td>
-                                                    <td contenteditable="true" class="ressources-cell">
+                                                    <td class="ressource-select">
                                                         <?php echo htmlspecialchars($row['ressources']); ?>
                                                         <button class="plus-btns btn btn-sm px-0 py-0"><i class="fas fa-plus"></i></button>
+                                                        <!--button plus -->
                                                     </td>
                                                     <td>
-                                                        <!-- <button class="save-btn btn btn-sm px-0 py-0"><i class="fas fa-save"></i></button> -->
+                                                        <button class="save-btn btn btn-sm px-0 py-0"><i class="fas fa-save"></i></button>
                                                         <button class="delete-btn btn btn-sm px-0 py-0" data-workorder-id="<?php echo $row['workorder_id']; ?>">
                                                             <i class="fas fa-trash"></i>
                                                         </button>
@@ -133,11 +116,19 @@ if (!$resultAffectations) {
             </div>
         </div>
 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <!-- Include DataTables -->
+        <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet">
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
         <script>
             $(document).ready(function() {
                 // Initialiser DataTable
@@ -172,16 +163,15 @@ if (!$resultAffectations) {
                     var row = $(this).closest('tr');
                     var ressourceSelect = createRessourceSelect();
                     var workorderSelect = createWorkorderSelect();
-                    row.after(`<tr class="new-ressource-row">
-                <td>${workorderSelect}</td>
-                <td>${ressourceSelect}</td>
+                    row.after(`<tr id="new-ressource-row">
+                        <td>${workorderSelect}</td>
+                        <td>${ressourceSelect}</td>
                 <td>
                     <button class="save-ressource-btn btn btn-sm px-0 py-0"><i class="fas fa-save"></i></button>
                 </td>
             </tr>`);
 
-                    // Initialiser Select2 pour les nouveaux menus déroulants ajoutés
-                    $('.new-ressource-row .ressource-select').select2({
+                    $('new-ressource-row ressource-select').select2({
                         placeholder: 'Sélectionner une ressource',
                         allowClear: true
                     });
@@ -190,6 +180,7 @@ if (!$resultAffectations) {
                         placeholder: 'Sélectionner un workorder',
                         allowClear: true
                     });
+
                 });
 
                 // Gestion du bouton de sauvegarde de ressource
@@ -226,38 +217,13 @@ if (!$resultAffectations) {
                     });
                 });
 
-                // Gestion du bouton de sauvegarde d'une affectation existante
+                // Gestion du bouton de sauvegarde de ressources 
                 $('#actionsTable').on('click', '.save-btn', function() {
                     var row = $(this).closest('tr');
                     var workOrderID = $(this).data('workorder-id');
                     var RessourceID = row.find('td:nth-child(2)').text(); // Récupérer les nouvelles ressources (colonne 2)
 
-                    // Exemple d'envoi de données par AJAX à update-affectation.php pour la mise à jour
-                    // $.ajax({
-                    //     url: 'update-affectation.php',
-                    //     type: 'POST',
-                    //     data: {
-                    //         workOrderID: workOrderID,
-                    //         RessourceID: RessourceID
-                    //     },
-                    //     success: function(response) {
-                    //         Swal.fire({
-                    //             title: "Affectation mise à jour!",
-                    //             icon: "success",
-                    //             button: "OK"
-                    //         }).then(() => {
-                    //             location.reload(); // Recharger la page après la mise à jour
-                    //         });
-                    //     },
-                    //     error: function(xhr, status, error) {
-                    //         Swal.fire({
-                    //             title: "Erreur!",
-                    //             text: "Échec de la mise à jour de l'affectation. Erreur: " + error,
-                    //             icon: "error",
-                    //             button: "OK"
-                    //         });
-                    //     }
-                    // });
+
                 });
 
                 // Gestion du bouton de suppression d'une affectation
@@ -312,6 +278,29 @@ if (!$resultAffectations) {
 
         <!-- Inclure le pied de page -->
         <?php include '../../frames/footer_frame.php'; ?>
+        <script src="../../assets/js/table-treeview.js"></script>
+
+
+        <script src="../../assets/js/customizer.js"></script>
+
+        <!-- Chart Custom JavaScript -->
+        <script async src="../../assets/js/chart-custom.js"></script>
+
+
+        <script async src="../../assets/js/slider.js"></script>
+
+
+
+        <script src="../../assets/vendor/moment.min.js"></script>
+
+
+        <script src="../../assets/vendor/moment.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+
+        <link rel="stylesheet" href="https:////cdn.datatables.net/buttons/3.0.2/css/buttons.bootstrap.css" />
     </div>
 </body>
 
