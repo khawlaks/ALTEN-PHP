@@ -42,16 +42,44 @@ if (!$resultAffectations) {
 <html lang="en">
 
 <head>
+    <!-- Meta tags -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Webkit | Affectation</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Title -->
+    <title>Webkit | Affectation </title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="../../assets/image/favicon.ico" />
     <link rel="stylesheet" href="../../assets/css/backend-plugin.min.css">
+    <!-- CSS files -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/fontawesome.min.css">
     <link rel="stylesheet" href="../../assets/css/backend.css?v=1.0.0">
-    <link rel="stylesheet" href="../../assets/css/style.css">
-    <!-- Autres stylesheets et scripts nécessaires -->
+    <link rel="stylesheet" href="../../assets/vendor/remixicon/fonts/remixicon.css">
+    <link rel="stylesheet" href="../../assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="../../assets/vendor/remixicon/fonts/remixicon.css">
+    <!-- Calendar -->
+    <link rel="stylesheet" href="../../assets/vendor/tui-calendar/tui-calendar/dist/tui-calendar.css">
+    <link rel="stylesheet" href="../../assets/vendor/tui-calendar/tui-date-picker/dist/tui-date-picker.css">
+    <link rel="stylesheet" href="../../assets/vendor/tui-calendar/tui-time-picker/dist/tui-time-picker.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/css/bootstrap-tokenfield.min.css">
+
+    <!-- sweetalert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    <!-- JavaScript files -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/fontawesome.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="./vanillaSelectBox.js"></script>
+    <script src="../../assets/js/backend-bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tokenfield/0.12.0/bootstrap-tokenfield.min.js"></script>
 </head>
 
 <body>
@@ -238,7 +266,7 @@ if (!$resultAffectations) {
                     var row = $(this).closest('tr');
                     var workOrderID = row.data('workorder-id');
 
-                   
+
                     Swal.fire({
                         title: 'Êtes-vous sûr(e) de vouloir supprimer cette affectation?',
                         text: "Cette action est irréversible!",
@@ -250,7 +278,7 @@ if (!$resultAffectations) {
                         cancelButtonText: 'Annuler'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                    
+
                             $.ajax({
                                 url: 'delete-affectation.php',
                                 type: 'POST',
