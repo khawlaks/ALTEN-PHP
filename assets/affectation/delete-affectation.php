@@ -4,7 +4,7 @@ include '../../db/connexion.php'; // Include your database connection
 // Check if workOrderID is provided
 if (isset($_POST['workOrderID'])) {
     $workOrderID = $_POST['workOrderID'];
-    $sql = "DELETE FROM affectation WHERE WorkOrderID = ?";
+    $sql = "DELETE FROM affectations WHERE WorkOrderID = ?";
     $stmt = $conn->prepare($sql);
      $stmt->bind_param("i", $workOrderID);
         if ($stmt->execute()) {
