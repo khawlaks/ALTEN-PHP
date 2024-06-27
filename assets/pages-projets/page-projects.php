@@ -1,4 +1,5 @@
 <?php
+session_start();
 include '../../db/connexion.php'; //require_once "../../db/connexion.php";
 $sql = "SELECT * FROM projects";
 //print($sql);die;
