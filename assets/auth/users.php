@@ -1,5 +1,8 @@
 <?php
-include '../../db/connexion.php'; //require_once "../../db/connexion.php";
+include '../../db/connexion.php';   //require_once "../../db/connexion.php";
+session_start(); 
+
+
 $sql = "SELECT  u.id,u.Email,u.Password,u.Role,r.nameressource FROM users u JOIN ressouce r ON r.id = u.RessourceID";
 
 //print($sql);die;
@@ -118,9 +121,9 @@ while ($row = $resultRessources->fetch_assoc()) {
                                                 <td contenteditable="true"><?php echo htmlspecialchars($row['Password']); ?></td>
                                                 <td>
                                                     <select>
-                                                        <option value="Niveau1" <?php echo ($row['Role'] == 'Niveau1') ? 'selected' : ''; ?>>Niveau1</option>
-                                                        <option value="Niveau2" <?php echo ($row['Role'] == 'Niveau2') ? 'selected' : ''; ?>>Niveau2</option>
-                                                        <option value="Niveau3" <?php echo ($row['Role'] == 'Niveau3') ? 'selected' : ''; ?>>Niveau3</option>
+                                                        <option value="admin" <?php echo ($row['Role'] == 'admin') ? 'selected' : ''; ?>>Admin</option>
+                                                        <option value="user" <?php echo ($row['Role'] == 'user') ? 'selected' : ''; ?>>User</option>
+                                                        <option value="niveau3" <?php echo ($row['Role'] == 'niveau3') ? 'selected' : ''; ?>>Niveau3</option>
                                                     </select>
                                                 </td>
                                                 <td>
@@ -272,8 +275,8 @@ while ($row = $resultRessources->fetch_assoc()) {
                             <td contenteditable="true"></td>
                                 <td>
                                 <select class="form-control">
-                                    <option value="Niveau1">Niveau1</option>
-                                    <option value="Niveau2">Niveau2</option>
+                                    <option value="admin">admin</option>
+                                    <option value="user">user</option>
                                     <option value="Niveau3">Niveau3</option>
                                 </select>
                             </td>

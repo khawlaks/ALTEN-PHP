@@ -1,4 +1,5 @@
-<?php include '../../db/connexion.php';  // connexion  de la base de donnees 
+<?php include '../../db/connexion.php';
+session_start();  // connexion  de la base de donnees 
 
 $sql = "SELECT r.id, w.WorkOrderNumber, r.nameressource,r.email,r.description,r.adresse,  r.CreatedAt, r.UpdatedAt FROM ressouce r JOIN workorders w ON w.id = r.WorkOrderID     ;
 ";

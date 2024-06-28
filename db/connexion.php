@@ -1,14 +1,29 @@
-<?php 
-  // session_start();
-   $db_username = 'root';
-   $db_password ='';
-   $db_name     = 'pmt';
-   $db_host     = 'localhost';
-    $conn = mysqli_connect($db_host, $db_username, $db_password,$db_name)
-           or die('could not connect to database');
+<?php
+// session_start();
+$db_username = 'root';
+$db_password = '';
+$db_name     = 'pmt';
+$db_host     = 'localhost';
+$conn = mysqli_connect($db_host, $db_username, $db_password, $db_name)
+  or die('could not connect to database');
 
-           if (!$conn) {
-            die("<script>alert('Connection Failed.')</script>");
-        }
-        
+if (!$conn) {
+  die("Connection failed: " . mysqli_connect_error());
+  echo '
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 mr-auto ml-auto text-center py-5 mt-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <h1 class="card-title bg-danger text-white">  Database Connection Failed </h1>
+                            <h2 class="card-title">  Database Failure</h2>
+                            <p class="card-text"> Please Check Your Database Connection.</p>
+                            <a href="#" class="btn btn-primary">:( </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    ';
+}
 ?>

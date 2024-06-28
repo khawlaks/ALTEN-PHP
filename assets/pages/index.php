@@ -1,4 +1,8 @@
-
+<?php session_start();
+if (!isset($_SESSION['id']) || $_SESSION['Role'] != 'admin') {
+    header('Location: ../../assets/auth/auth-sign-in.php');
+    exit();
+}?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -63,7 +67,9 @@
     <!--        TOPBAR -->
     <!-- ########################## -->
 
-    <?php include '../../frames/topbar_frame.php'; ?>
+    <?php include '../../frames/topbar_frame.php';
+             
+    ?>
 
     <!-- ########################## -->
     <div class="content-page">

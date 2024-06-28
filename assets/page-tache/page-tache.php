@@ -1,5 +1,6 @@
 <?php
-include '../../db/connexion.php'; //require_once "../../db/connexion.php";
+include '../../db/connexion.php';
+session_start(); //require_once "../../db/connexion.php";
 
 $sql = "SELECT t.id,t.TaskName, w.WorkOrderNumber, t.Description, t.Status, t.Priority, t.StartDate, t.EndDate, t.CreatedAt, t.UpdatedAt FROM tasks t JOIN workorders w ON w.id = t.WorkOrderID;
 ";

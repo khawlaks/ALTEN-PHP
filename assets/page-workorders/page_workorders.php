@@ -1,5 +1,6 @@
 <?php
-include '../../db/connexion.php';  // SOT require_once "../../db/connexion.php";
+include '../../db/connexion.php'; 
+session_start(); // SOT require_once "../../db/connexion.php";
 
 
 $sql =

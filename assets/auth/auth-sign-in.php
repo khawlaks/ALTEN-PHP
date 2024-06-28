@@ -1,5 +1,3 @@
-<?php include '../../db/connexion.php';
-?> <!--connexion dans la base de donnees -->
 <!doctype html>
 <html lang="en">
 
@@ -9,7 +7,7 @@
     <title>Webkit | Responsive Bootstrap 4 Admin Dashboard Template</title>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="../../assets/images/favicon.ico" />
+    <link rel="shortcut icon" href="../../assets/image/favicon.ico" />
     <link rel="stylesheet" href="../../assets/css/backend-plugin.min.css">
     <link rel="stylesheet" href="../../assets/css/backend.css?v=1.0.0">
     <link rel="stylesheet" href="../../assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
@@ -18,6 +16,25 @@
     <link rel="stylesheet" href="../../assets/vendor/tui-calendar/tui-calendar/dist/tui-calendar.css">
     <link rel="stylesheet" href="../../assets/vendor/tui-calendar/tui-date-picker/dist/tui-date-picker.css">
     <link rel="stylesheet" href="../../assets/vendor/tui-calendar/tui-time-picker/dist/tui-time-picker.css">
+    <style>
+        .success {
+            color: green;
+            font-weight: bold;
+            padding: 10px;
+            border: 1px solid green;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+            padding: 10px;
+            border: 1px solid red;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 
 <body class=" ">
@@ -28,86 +45,95 @@
     </div>
     <!-- loader END -->
 
-    <div class="wrapper">
-        <section class="login-content">
-            <div class="container">
-                <div class="row align-items-center justify-content-center height-self-center">
-                    <div class="col-lg-8">
-                        <div class="card auth-card">
-                            <div class="card-body p-0">
-                                <div class="d-flex align-items-center auth-content">
-                                    <div class="col-lg-6 bg-primary content-left">
-                                        <div class="p-3">
-                                            <h2 class="mb-2 text-white">Sign In</h2>
-                                            <p>Login to stay connected.</p>
-                                            <form>
-                                                <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <div class="floating-label form-group">
-                                                            <input class="floating-input form-control" name="Email" type="email" placeholder=" ">
-                                                            <label>Email</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-12">
-                                                        <div class="floating-label form-group">
-                                                            <input class="floating-input form-control" name="Password"  type="password" placeholder=" ">
-                                                            <label>Password</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="custom-control custom-checkbox mb-3">
-                                                            <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                                            <label class="custom-control-label control-label-1 text-white" for="customCheck1">Remember Me</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <a href="auth-recoverpw.html" class="text-white float-right">Forgot Password?</a>
-                                                    </div>
-                                                </div>
-                                                <button type="submit" name="submit" class="btn btn-white">Sign In</button>
-                                                <!-- <p class="mt-3">
-                                                    Create an Account <a href="auth-sign-up.html" class="text-white text-underline">Sign Up</a>
-                                                </p> -->
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 content-right">
-                                        <img src="../../assets/images/login/01.png" class="img-fluid image-right" alt="">
-                                    </div>
+    <body class="bg-gradient-white ">
+        <div class="container">
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <div class="row">
+                        <div class="col-lg-5 d-none d-lg-block">
+                            <img src="alten.jpg" width="500" alt="ALTEN Logo">
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="p-5">
+                                <div class="text-center">
+                                    <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                    <div id="error" class="error"></div>
+                                    <div id="success" class="success"></div>
                                 </div>
+
+                                <form id="loginForm" method="POST">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail">Email :</label>
+                                        <input type="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Votre adresse email" name="Email">
+                                      
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword">Mot de Passe :</label>
+                                        <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Créez un mot de passe sécurisé" name="Password">
+
+                                    </div>
+
+
+                                    <button type="submit" class="btn btn-primary btn-user btn-block">Login</button>
+                                    <hr>
+                                   
+                                </form>
+
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+        <script>
+            $(document).ready(function() {
+                $("#success").hide(); //hide : qui va nous permettre de cacher des elements sur une page
+                $("#error").hide();
 
-    <?php 
-        if(isset($_POST["submit"])){
-            var_dump($_POST);
-                
-        }
-    ?>
+                $('#loginForm').on('submit', function(e) {
+                    e.preventDefault();
+                    var formData = $(this).serialize();
+                    $.ajax({
+                        type: 'POST',
+                        url: 'auth.sign.php',
+                        data: formData,
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.success) {
+                                $('#success').text(response.message).show();
+                                $('#error').hide();
+                                setTimeout(function() {
+                                    window.location.href = response.redirect_url;
+                                }, 2000);
+                            } else {
+                                $('#error').text(response.message).show();
+                                $('#success').hide();
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
 
-    <!-- Backend Bundle JavaScript -->
-    <script src="../../assets/js/backend-bundle.min.js"></script>
+        <!-- Backend Bundle JavaScript -->
+        <script src="../../assets/js/backend-bundle.min.js"></script>
+        <!-- Table Treeview JavaScript -->
+        <script src="../../assets/js/table-treeview.js"></script>
+        <!-- Chart Custom JavaScript -->
+        <script src="../../assets/js/customizer.js"></script>
+        <!-- Chart Custom JavaScript -->
+        <script async src="../../assets/js/chart-custom.js"></script>
+        <!-- Chart Custom JavaScript -->
+        <script async src="../../assets/js/slider.js"></script>
+        <!-- app JavaScript -->
+        <script src="../../assets/js/app.js"></script>
+        <script src="../../assets/vendor/moment.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
 
-    <!-- Table Treeview JavaScript -->
-    <script src="../../assets/js/table-treeview.js"></script>
 
-    <!-- Chart Custom JavaScript -->
-    <script src="../../assets/js/customizer.js"></script>
-
-    <!-- Chart Custom JavaScript -->
-    <script async src="../../assets/js/chart-custom.js"></script>
-    <!-- Chart Custom JavaScript -->
-    <script async src="../../assets/js/slider.js"></script>
-
-    <!-- app JavaScript -->
-    <script src="../../assets/js/app.js"></script>
-
-    <script src="../../assets/vendor/moment.min.js"></script>
-</body>
+    </body>
 
 </html>
