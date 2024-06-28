@@ -1,5 +1,6 @@
-<?php
-include '../../db/connexion.php';  // Connexion à la base de données 
+<?php 
+include '../../db/connexion.php';   // Connexion à la base de données 
+session_start(); 
 
 // Récupérer les ressources 
 $sqlRessources = "SELECT * FROM ressouce";
@@ -59,7 +60,15 @@ while ($row = $resultAffectations->fetch_assoc()) {
     <link rel="stylesheet" href="../../assets/css/backend-plugin.min.css">
     <link rel="stylesheet" href="../../assets/css/backend.css?v=1.0.0">
     <link rel="stylesheet" href="../../assets/css/style.css">
+    <script src="../../assets/js/backend-bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css" />
+    <style>
+        body {
+            font-family: "Open Sans";
+        }
+    </style>
+
+
 </head>
 
 <body>
@@ -93,10 +102,10 @@ while ($row = $resultAffectations->fetch_assoc()) {
                                                 <tr data-workorder-id="<?php echo $affectation['workorder_id']; ?>">
                                                     <td class="">
 
-                                                   
-                                                            <?php echo htmlspecialchars($affectation['WorkOrderNumber']); ?>
-                                                 
-                                                       
+
+                                                        <?php echo htmlspecialchars($affectation['WorkOrderNumber']); ?>
+
+
                                                     </td>
                                                     <td class="ressource-select">
                                                         <?php
@@ -124,6 +133,7 @@ while ($row = $resultAffectations->fetch_assoc()) {
             </div>
         </div>
         <!-- Include JavaScript -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.min.js"></script>
@@ -378,6 +388,31 @@ while ($row = $resultAffectations->fetch_assoc()) {
                 </tr>`);
 
 
+                });
+
+                //export csv
+
+                document.getElementById('export-csv-btn').addEventListener('click', function() {
+                    console.log("ca marche");
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+
+                    Toast.fire({
+                        icon: "success",
+                        title: "Affectation Excel in successfully",
+                    }).then(() => {
+                        console.log('Toast displayed, redirecting...');
+                        window.location.href = 'export-csv-affectation.php';
+                    });
                 });
             });
         </script>
