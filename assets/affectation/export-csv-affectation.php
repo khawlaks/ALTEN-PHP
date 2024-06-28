@@ -4,7 +4,7 @@
 $output=fopen('php://output','w');
 header('Content-Type: text/csv; charset=utf-8');
 header('Content-Disposition: attachment; filename=export-affectation.csv');
-header('Cache-Control: no-cache, no-store, must-revalidate'); // HTTP 1.
+header('Cache-Control: no-cache, no-store, must-revalidate'); 
 
 fputcsv($output,array('Identification d affectation','WorkOrderNumber','Nom de Ressource'));
 
