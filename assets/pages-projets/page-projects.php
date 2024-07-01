@@ -2,7 +2,6 @@
 session_start();
 include '../../db/connexion.php'; //require_once "../../db/connexion.php";
 $sql = "SELECT * FROM projects";
-//print($sql);die;
 $result = $conn->query($sql);
 if (!$result) {
     die("Erreur de requête: " . $conn->error);
@@ -29,98 +28,77 @@ if (!$result) {
     <link rel="stylesheet" href="../../assets/vendor/remixicon/fonts/remixicon.css">
     <link rel="stylesheet" href="../../assets/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
     <link rel="stylesheet" href="../../assets/vendor/tui-calendar/tui-time-picker/dist/tui-time-picker.css">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
-
-
     <link rel="stylesheet" href="https:////cdn.datatables.net/buttons/3.0.2/css/buttons.bootstrap.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
-
     <!-- JavaScript files -->
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/js/fontawesome.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-
-
     <script src="../../assets/js/backend-bundle.min.js"></script>
+    <style>
 
 
 
-
+    </style>
 
 </head>
 
 <body class="">
-
     <div class="wrapper">
-        <!--   SIDEBAR  -->
-        <!-- ########################## -->
+        <!-- SIDEBAR -->
         <?php include '../../frames/sidebar_frame.php'; ?>
 
-        <!--        TOPBAR -->
-        <!-- ########################## -->
-
+        <!-- TOPBAR -->
         <?php include '../../frames/topbar_frame.php'; ?>
-
 
         <div class="content-page">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-5 col-lg-6">
+                    <div class="col-lg-6">
                         <div class="card card-block card-stretch card-height">
                             <div class="card-body">
                                 <div class="top-block d-flex align-items-center justify-content-between">
-                                    <h5>Diagramme de Gant : </h5>
+                                    <h3>Diagramme de Gant :</h3>
                                 </div>
                                 <div class="chart-container pie-chart">
-                                    <div id="chart_div">
-                                    </div>
-
+                                    <div id="ganttChart"></div>
 
                                 </div>
-
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-5 col-lg-6">
+                    <div class=" col-lg-6">
                         <div class="card card-block card-stretch card-height">
                             <div class="card-body">
-                                <div class="top-block d-flex align-items-center justify-content-between">
-                                    <h5>Status</h5>
+                                <div id="h3" class="top-block d-flex align-items-center justify-content-between">
+                                    <h3>Status</h3>
                                 </div>
-                                <div class="chart-container pie-chart">
-                                    <div id="piechart">
-                                    </div>
+                                <div class="chart-container ">
 
+                                    <canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
 
                                 </div>
-
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
-
 
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
                             <div class="header-title">
-                                <button id="add-row-btn" class="btn btn-info  mr-3" type="button">Add New Workorders+</button>
-                                <button id="export-csv-btn" class="btn btn-success mr-3 ">Export CSV</button>
-
+                                <button id="add-row-btn" class="btn btn-info mr-3" type="button">Add New Project+</button>
+                                <button id="export-csv-btn" class="btn btn-success mr-3">Export CSV</button>
                             </div>
-
-
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table id="actionsTable" class="table data-table table-bordered">
@@ -168,86 +146,130 @@ if (!$result) {
             </div>
         </div>
 
-        <!-- Tables  -->
-
-
+        <!-- <div class="chartMenu">
+            <p>WWW.CHARTJS3.COM (Chart JS <span id="chartVersion"></span>)</p>
+        </div>
+        <div class="chartCard"> 
+            <div class="chartBox">
+                <canvas id="myChart"></canvas>
+            </div>
+        </div> -->
         <!-- Include jQuery and DataTables JS -->
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
-        <script src="https://cdn.datatables.net/buttons/2.1.0/js/dataTables.buttons.min.js"></script>
+        <!--  END Include jQuery and DataTables JS -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
+
         <?php include '../../charts/pie-projets.php'; ?>
+
         <script type="text/javascript">
             $(document).ready(function() {
+    
+                // $('h3').css({fontFamily:'Verdana',color:'green'});
+
+
+                const labels = <?php echo $labelsJSON; ?>;
+                const data = <?php echo $dataJSON; ?>;
+                const headcount = data.reduce((total, count) => total + count, 0);
+                const percentages = data.map(count => ((count / headcount) * 100).toFixed(2));
+
+
+
+
+                const data_headcount = {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Status',
+                        data: data,
+                        backgroundColor: ['#00a65a', '#f39c12', '#00c0ef']
+                    }]
+                };
+
+                const config_headcount = {
+                    type: 'doughnut',
+                    data: data_headcount,
+                    options: {
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.label || context.chart.data.labels[context.dataIndex] || '';
+                                        const value = context.raw;
+                                        const percentage = percentages[context.dataIndex] || 0;
+                                        return `${label}: ${value} (${percentage}%)`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+
+                const ctx_headcount = document.getElementById('donutChart').getContext('2d');
+                new Chart(ctx_headcount, config_headcount);
+
+                //diagramme de gantt 
+
+
+
+                // Gantt Chart Data
+                var projects = <?php echo $projectsJSON; ?>;
+                console.log(projects); // Check the data in the console
+
+
+
+                // Example Gantt chart rendering code (you can replace this with your actual implementation)
                 google.charts.load('current', {
-                    'packages': ['corechart', 'gantt']
+                    'packages': ['gantt']
                 });
                 google.charts.setOnLoadCallback(drawChart);
 
                 function drawChart() {
-                    var data = google.visualization.arrayToDataTable([
-                        ['Status', 'Count'],
-                        <?php foreach ($Status as $index => $status) : ?>['<?php echo $status; ?>', <?php echo $data[$index]; ?>],
-                        <?php endforeach; ?>
+                    var data = new google.visualization.DataTable();
+                    data.addColumn('string', 'Task ID');
+                    data.addColumn('string', 'Task Name');
+                    data.addColumn('string', 'Resource');
+                    data.addColumn('date', 'Start Date');
+                    data.addColumn('date', 'End Date');
+                    data.addColumn('number', 'Duration');
+                    data.addColumn('number', 'Percent Complete');
+                    data.addColumn('string', 'Dependencies');
+
+                    var rows = projects.map(project => [
+                        project.ProjectName,
+                        project.Description,
+                        null,
+                        new Date(project.StartDate),
+                        new Date(project.EndDate),
+                        null,
+                        0,
+                        null
+                        //project.Color
                     ]);
 
+                    data.addRows(rows);
+
                     var options = {
-                        title: 'Nombre de Status',
-                        style: 'arial',
-                        pieHole: 0.4, // For a donut chart
+                        height: 400,
+                        gantt: {
+                            trackHeight: 30,
+                            barCornerRadius: 5,
+
+                        },
+                        colors: ['#FF0000', '#0000FF'] // set colors to red and blue
                     };
 
-                    var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+                    var chart = new google.visualization.Gantt(document.getElementById('ganttChart'));
                     chart.draw(data, options);
-
-                    $.ajax({
-                        url: 'gant_chart.php',
-                        dataType: 'json',
-                        success: function(jsonData) {
-                            //console.log('Received JSON data:', jsonData); // Debugging line
-
-                            var data = new google.visualization.DataTable();
-                            data.addColumn('string', 'Task ID');
-                            data.addColumn('string', 'Task Name');
-                            data.addColumn('date', 'Start Date');
-                            data.addColumn('date', 'End Date');
-                            data.addColumn('number', 'Duration');
-                            data.addColumn('number', 'Percent Complete');
-                            data.addColumn('string', 'Dependencies');
-
-                            jsonData.forEach(row => {
-                                // console.log('Processing row:', row); // Debugging line
-                                data.addRow([
-                                    row.ProjectName,
-                                    row.Description,
-                                    new Date(row.StartDate),
-                                    new Date(row.EndDate),
-                                    null,
-                                    0,
-                                    null
-                                ]);
-                            });
-
-                            var options = {
-                                height: 400,
-                                gantt: {
-                                    trackHeight: 30
-                                }
-                            };
-
-                            var chart = new google.visualization.Gantt(document.getElementById('chart_div'));
-                            chart.draw(data, options);
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Error:', error);
-                        }
-                    });
                 }
+
+
+
+
 
                 $('#actionsTable').DataTable({
                     scrollCollapse: true,
@@ -261,7 +283,7 @@ if (!$result) {
                         Description: row.find('td:eq(1)').text(),
                         StartDate: row.find('td:eq(2) input').val(),
                         EndDate: row.find('td:eq(3) input').val(),
-                        Status: row.find('td:eq(4)').find('select').val(),
+                        Status: row.find('td:eq(4) select').val(),
                     };
 
                     $.ajax({
@@ -383,15 +405,9 @@ if (!$result) {
 
             });
         </script>
-
-
-
-
     </div>
 
-
     <?php include '../../frames/footer_frame.php'; ?>
-
 
     <!-- Table Treeview JavaScript -->
     <script src="../../assets/js/table-treeview.js"></script>
@@ -406,14 +422,8 @@ if (!$result) {
 
     <!-- app JavaScript -->
     <!-- <script src="../../assets/js/app.js"></script> -->
-
-    <script src="../../assets/vendor/moment.min.js"></script>
-
-
     <script src="../../assets/vendor/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
 </body>
 
 </html>

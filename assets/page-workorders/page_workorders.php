@@ -1,5 +1,5 @@
 <?php
-include '../../db/connexion.php'; 
+include '../../db/connexion.php';
 session_start(); // SOT require_once "../../db/connexion.php";
 
 
@@ -115,375 +115,472 @@ if (!$result) {
     <div class="content-page">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-5 col-lg-6">
+                <div class="col-md-6 col-lg-6">
                     <div class="card card-block card-stretch card-height">
                         <div class="card-body">
                             <div class="top-block d-flex align-items-center justify-content-between">
-                                <h5>Diagramme de Gantt</h5>
+                                <h5>Status </h5>
                             </div>
-                            <div class="chart-container pie-chart">
-                                <div id="chart_div" width="400px">
-                                </div>
-                            </div>
-
+                            <canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
                         </div>
-
                     </div>
+
                 </div>
 
                 <div class="col-md-5 col-lg-6">
                     <div class="card card-block card-stretch card-height">
                         <div class="card-body">
                             <div class="top-block d-flex align-items-center justify-content-between">
-
+                                <h5> Country</h5>
                             </div>
                             <div class="chart-container pie-chart">
-                                <div id="piechart" width="400px">
-
-                                </div>
+                                <canvas id="countries" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
 
                             </div>
 
                         </div>
+
                     </div>
                 </div>
-
             </div>
 
-
-            <div class="container-fuild">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="header-title ">
+        </div>
 
 
-                                <button id="add-row-btn" class="btn btn-warning mr-2" type="button"> Add New Workorders+</button>
+        <div class="container-fuild">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="header-title ">
 
-                                <button id="export-csv-btn" class="btn btn-success mr-2">Export CSV</button>
 
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <script>
+                            <button id="add-row-btn" class="btn btn-warning mr-2" type="button"> Add New Workorders+</button>
 
-                                    </script>
-                                    <table id="actionsTable" class="table data-table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>ProjectName</th>
-                                                <th>WorkOrderNumber</th>
-                                                <th>DescriptionOfWorkOrders</th>
-                                                <th>StartDate</th>
-                                                <th>EndDate</th>
-                                                <th>Status</th>
-                                                <th>WorkOrderCreatedAt </th>
-                                                <th> WorkOrderUpdatedAt</th>
-                                                <th>Country</th>
-                                                <th>Plant</th>
-                                                <th>STELLANTISRequester </th>
-                                                <th>ALTENPilot</th>
-                                                <th>ReceptionDateWO</th>
-                                                <th>DeadlineSTELLANTISWO</th>
-                                                <th>StartOfProductionALTEN</th>
-                                                <th>DeliveryDate</th>
-                                                <th>ValidationCriteria</th>
-                                                <th>Priority</th>
-                                                <th>NumberOfDeliverables</th>
-                                                <th>NumberOfValidatedDeliverablesRFT</th>
-                                                <th>RFT</th>
-                                                <th>NumberOfValidatedDeliverablesOTD</th>
-                                                <th>OTD</th>
-                                                <th>Actions</th>
+                            <button id="export-csv-btn" class="btn btn-success mr-2">Export CSV</button>
+
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <script>
+
+                                </script>
+                                <table id="actionsTable" class="table data-table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>ProjectName</th>
+                                            <th>WorkOrderNumber</th>
+                                            <th>DescriptionOfWorkOrders</th>
+                                            <th>StartDate</th>
+                                            <th>EndDate</th>
+                                            <th>Status</th>
+                                            <th>WorkOrderCreatedAt </th>
+                                            <th> WorkOrderUpdatedAt</th>
+                                            <th>Country</th>
+                                            <th>Plant</th>
+                                            <th>STELLANTISRequester </th>
+                                            <th>ALTENPilot</th>
+                                            <th>ReceptionDateWO</th>
+                                            <th>DeadlineSTELLANTISWO</th>
+                                            <th>StartOfProductionALTEN</th>
+                                            <th>DeliveryDate</th>
+                                            <th>ValidationCriteria</th>
+                                            <th>Priority</th>
+                                            <th>NumberOfDeliverables</th>
+                                            <th>NumberOfValidatedDeliverablesRFT</th>
+                                            <th>RFT</th>
+                                            <th>NumberOfValidatedDeliverablesOTD</th>
+                                            <th>OTD</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $sqlProjects = "SELECT * FROM projects";
+                                        $resultProjects = $conn->query($sqlProjects);
+                                        if (!$resultProjects) {
+                                            die("Erreur de requête: " . $conn->error);
+                                        }
+
+                                        $projects = [];
+                                        while ($projectRow = $resultProjects->fetch_assoc()) {
+                                            $projects[] = $projectRow;
+                                        }
+                                        ?>
+                                        <?php while ($row = $result->fetch_assoc()) : ?>
+                                            <tr data-id="<?php echo $row['id']; ?>">
+                                                <td>
+                                                    <select>
+                                                        <?php foreach ($projects as $project) : ?>
+                                                            <option value="<?php echo $project['id']; ?>" <?php echo $project['ProjectName'] === $row['ProjectName'] ? 'selected' : ''; ?>>
+                                                                <?php echo htmlspecialchars($project['ProjectName']); ?>
+                                                            </option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                </td>
+                                                <td contenteditable="true"><?php echo htmlspecialchars($row['WorkOrderNumber']); ?></td>
+                                                <td contenteditable="true"><?php echo htmlspecialchars($row['Description']); ?></td>
+                                                <td><input type="date" value="<?php echo htmlspecialchars($row['StartDate']); ?>"></td>
+                                                <td><input type="date" value="<?php echo htmlspecialchars($row['EndDate']); ?>"></td>
+                                                <td>
+                                                    <select>
+                                                        <option value="Planned" <?php echo ($row['Status'] == 'Planned') ? 'selected' : ''; ?>>Planned</option>
+                                                        <option value="Ongoing" <?php echo ($row['Status'] == 'Ongoing') ? 'selected' : ''; ?>>Ongoing</option>
+                                                        <option value="Completed" <?php echo ($row['Status'] == 'Completed') ? 'selected' : ''; ?>>Completed</option>
+                                                    </select>
+                                                </td>
+                                                <td style="padding: 100px;"> <?php echo htmlspecialchars($row['CreatedAt']); ?> </td>
+                                                <td> <?php echo htmlspecialchars($row['UpdatedAt']); ?> </td>
+                                                <td contenteditable="true"><?php echo htmlspecialchars($row['Country']); ?></td>
+                                                <td contenteditable="true"><?php echo htmlspecialchars($row['Plant']); ?></td>
+                                                <td contenteditable="true"><?php echo htmlspecialchars($row['STELLANTISRequester']); ?></td>
+                                                <td contenteditable="true"><?php echo htmlspecialchars($row['ALTENPilot']); ?></td>
+                                                <td><input type="date" value="<?php echo htmlspecialchars($row['ReceptionDateWO']); ?>"></td>
+                                                <td><input type="date" value="<?php echo htmlspecialchars($row['DeadlineSTELLANTISWO']); ?>"></td>
+
+                                                <td><input type="date" value="<?php echo htmlspecialchars($row['StartOfProductionALTEN']); ?>"></td>
+                                                <td><input type="date" value="<?php echo htmlspecialchars($row['DeliveryDate']); ?>"></td>
+
+                                                <td contenteditable="true"><?php echo htmlspecialchars($row['ValidationCriteria']); ?></td>
+
+                                                <td>
+                                                    <select>
+                                                        <option value="High" <?php echo ($row['Priority'] == 'High') ? 'selected' : ''; ?>>High</option>
+                                                        <option value="Medium" <?php echo ($row['Priority'] == 'Medium') ? 'selected' : ''; ?>>Medium</option>
+                                                        <option value="Low" <?php echo ($row['Priority'] == 'Low') ? 'selected' : ''; ?>>Low</option>
+                                                    </select>
+                                                </td>
+                                                <td><input type="text" value="<?php echo htmlspecialchars($row['NumberOfDeliverables']); ?>"></td>
+                                                <td><input type="text" value="<?php echo htmlspecialchars($row['NumberOfValidatedDeliverablesRFT']); ?>"></td>
+                                                <td><?php echo htmlspecialchars($row['RFT']) . '%'; ?></td>
+                                                <td><input type="text" value="<?php echo htmlspecialchars($row['NumberOfValidatedDeliverablesOTD']); ?>"></td>
+                                                <td><?php echo htmlspecialchars($row['OTD']) . '%'; ?></td>
+                                                <td>
+                                                    <button class="save-btn btn btn-sm px-0  py-0"><i class="fas fa-save"></i></button>
+                                                    <button class="delete-btn btn  btn-sm px-0 py-0"><i class="fas fa-trash"></i></button>
+                                                </td>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                            $sqlProjects = "SELECT * FROM projects";
-                                            $resultProjects = $conn->query($sqlProjects);
-                                            if (!$resultProjects) {
-                                                die("Erreur de requête: " . $conn->error);
-                                            }
-
-                                            $projects = [];
-                                            while ($projectRow = $resultProjects->fetch_assoc()) {
-                                                $projects[] = $projectRow;
-                                            }
-                                            ?>
-                                            <?php while ($row = $result->fetch_assoc()) : ?>
-                                                <tr data-id="<?php echo $row['id']; ?>">
-                                                    <td>
-                                                        <select>
-                                                            <?php foreach ($projects as $project) : ?>
-                                                                <option value="<?php echo $project['id']; ?>" <?php echo $project['ProjectName'] === $row['ProjectName'] ? 'selected' : ''; ?>>
-                                                                    <?php echo htmlspecialchars($project['ProjectName']); ?>
-                                                                </option>
-                                                            <?php endforeach; ?>
-                                                        </select>
-                                                    </td>
-                                                    <td contenteditable="true"><?php echo htmlspecialchars($row['WorkOrderNumber']); ?></td>
-                                                    <td contenteditable="true"><?php echo htmlspecialchars($row['Description']); ?></td>
-                                                    <td><input type="date" value="<?php echo htmlspecialchars($row['StartDate']); ?>"></td>
-                                                    <td><input type="date" value="<?php echo htmlspecialchars($row['EndDate']); ?>"></td>
-                                                    <td>
-                                                        <select>
-                                                            <option value="Planned" <?php echo ($row['Status'] == 'Planned') ? 'selected' : ''; ?>>Planned</option>
-                                                            <option value="Ongoing" <?php echo ($row['Status'] == 'Ongoing') ? 'selected' : ''; ?>>Ongoing</option>
-                                                            <option value="Completed" <?php echo ($row['Status'] == 'Completed') ? 'selected' : ''; ?>>Completed</option>
-                                                        </select>
-                                                    </td>
-                                                    <td style="padding: 100px;"> <?php echo htmlspecialchars($row['CreatedAt']); ?> </td>
-                                                    <td> <?php echo htmlspecialchars($row['UpdatedAt']); ?> </td>
-                                                    <td contenteditable="true"><?php echo htmlspecialchars($row['Country']); ?></td>
-                                                    <td contenteditable="true"><?php echo htmlspecialchars($row['Plant']); ?></td>
-                                                    <td contenteditable="true"><?php echo htmlspecialchars($row['STELLANTISRequester']); ?></td>
-                                                    <td contenteditable="true"><?php echo htmlspecialchars($row['ALTENPilot']); ?></td>
-                                                    <td><input type="date" value="<?php echo htmlspecialchars($row['ReceptionDateWO']); ?>"></td>
-                                                    <td><input type="date" value="<?php echo htmlspecialchars($row['DeadlineSTELLANTISWO']); ?>"></td>
-
-                                                    <td><input type="date" value="<?php echo htmlspecialchars($row['StartOfProductionALTEN']); ?>"></td>
-                                                    <td><input type="date" value="<?php echo htmlspecialchars($row['DeliveryDate']); ?>"></td>
-
-                                                    <td contenteditable="true"><?php echo htmlspecialchars($row['ValidationCriteria']); ?></td>
-
-                                                    <td>
-                                                        <select>
-                                                            <option value="High" <?php echo ($row['Priority'] == 'High') ? 'selected' : ''; ?>>High</option>
-                                                            <option value="Medium" <?php echo ($row['Priority'] == 'Medium') ? 'selected' : ''; ?>>Medium</option>
-                                                            <option value="Low" <?php echo ($row['Priority'] == 'Low') ? 'selected' : ''; ?>>Low</option>
-                                                        </select>
-                                                    </td>
-                                                    <td><input type="text" value="<?php echo htmlspecialchars($row['NumberOfDeliverables']); ?>"></td>
-                                                    <td><input type="text" value="<?php echo htmlspecialchars($row['NumberOfValidatedDeliverablesRFT']); ?>"></td>
-                                                    <td><?php echo htmlspecialchars($row['RFT']) . '%'; ?></td>
-                                                    <td><input type="text" value="<?php echo htmlspecialchars($row['NumberOfValidatedDeliverablesOTD']); ?>"></td>
-                                                    <td><?php echo htmlspecialchars($row['OTD']) . '%'; ?></td>
-                                                    <td>
-                                                        <button class="save-btn btn btn-sm px-0  py-0"><i class="fas fa-save"></i></button>
-                                                        <button class="delete-btn btn  btn-sm px-0 py-0"><i class="fas fa-trash"></i></button>
-                                                    </td>
-                                                </tr>
-                                            <?php endwhile; ?>
-                                        </tbody>
-                                        <!-- Vos données ici -->
-                                    </table>
-                                </div>
+                                        <?php endwhile; ?>
+                                    </tbody>
+                                    <!-- Vos données ici -->
+                                </table>
                             </div>
-
                         </div>
+
                     </div>
-
                 </div>
+
             </div>
+        </div>
 
-            <!-- Tables  -->
+        <!-- Tables  -->
 
 
-            <!-- Include jQuery and DataTables JS -->
+        <!-- Include jQuery and DataTables JS -->
 
-            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-            <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
-            <!--  END Include jQuery and DataTables JS -->
-            <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <!--  END Include jQuery and DataTables JS -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-            <script type="text/javascript">
-                $(document).ready(function() {
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <?php include '../../charts/charts-workorders.php'; ?>
+        <script type="text/javascript">
+            const countries_labels = <?php echo $countriesJSON; ?>;
+            const countries_data = <?php echo $datasJSON; ?>;
+            const headcount = countries_data.reduce((total, count) => total + count, 0);
+            const percentages = countries_data.map(count => ((count / headcount) * 100).toFixed(2));
+            const data_countries = {
+                labels: countries_labels,
+                datasets: [{
+                    label: 'Countries',
+                    data: countries_data,
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 205, 86)',
+                        'rgb(153, 102, 255)', // Purple
+                        'rgb(255, 159, 64)',
+                        'rgb(255, 0, 0)', // Bright Red
+                        'rgb(0, 255, 0)', // Bright Green
+                        'rgb(0, 0, 255)', // Bright Blue
+                        'rgb(255, 255, 0)', // Bright Yellow
+                        'rgb(255, 0, 255)', // Magenta
+                        'rgb(0, 255, 255)', // 
 
-                    $('#actionsTable').DataTable({
 
-                        scrollCollapse: true,
-                        paging: true,
-                        info: true
-                    });
+                        // Add more colors as needed
+                    ],
+                    hoverOffset: 4
+                }]
+            };
 
-                    function saveRow(row) {
-                        var id = row.data('id');
-                        var data = {
-                            ProjectID: row.find('td:eq(0) select').val(),
-                            WorkOrderNumber: row.find('td:eq(1)').text(),
-                            Description: row.find('td:eq(2)').text(),
-                            StartDate: row.find('td:eq(3)  input').val(),
-                            EndDate: row.find('td:eq(4)  input').val(),
-                            Status: row.find('td:eq(5) select').val(),
-                            // CreatedAt: row.find('td:eq(6) input').val(),
-                            // UpdatedAt: row.find('td:eq(7) input').val(),
-                            Country: row.find('td:eq(8)').text(),
-                            Plant: row.find('td:eq(9)').text(),
-                            STELLANTISRequester: row.find('td:eq(10)').text(),
-                            ALTENPilot: row.find('td:eq(11)').text(),
-                            ReceptionDateWO: row.find('td:eq(12) input').val(),
-                            DeadlineSTELLANTISWO: row.find('td:eq(13) input ').val(),
-                            StartOfProductionALTEN: row.find('td:eq(14) input').val(),
-                            DeliveryDate: row.find('td:eq(15) input').val(),
-                            ValidationCriteria: row.find('td:eq(16)').text(),
-                            Priority: row.find('td:eq(17) select').val(),
-                            NumberOfDeliverables: row.find('td:eq(18) input').val(),
-                            NumberOfValidatedDeliverablesRFT: row.find('td:eq(19) input').val(),
-                            RFT: row.find('td:eq(20)').text(),
-                            NumberOfValidatedDeliverablesOTD: row.find('td:eq(21) input').val(),
-                            OTD: row.find('td:eq(22)').text()
-                        };
-
-                        $.ajax({
-                            url: id ? 'update-workoders.php' : 'add-workorders.php',
-                            type: 'POST',
-                            data: {
-                                id: id,
-                                data: data
-                            },
-                            success: function(response) {
-                                Swal.fire({
-                                    title: "Do you want to save the changes?",
-                                    showDenyButton: true,
-                                    showCancelButton: true,
-                                    confirmButtonText: "Save",
-                                    denyButtonText: `Don't save`
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        Swal.fire("Saved!", "", "success");
-                                        if (!id) {
-                                            row.attr('data-id', response); // Set the new ID from the response
-                                        }
-                                        window.location.href = 'page_workorders.php';
-                                    } else if (result.isDenied) {
-                                        Swal.fire("Changes are not saved", "", "info");
-                                    }
-                                });
-                            },
-                            error: function(xhr, status, error) {
-                                Swal.fire({
-                                    title: "Error!",
-                                    text: "Failed to " + (id ? "update" : "add") + " record. Error: " + error,
-                                    icon: "error",
-                                    button: "OK",
-                                });
-                            }
-                        });
-                    }
-
-                    function deleteRow(row) {
-                        var id = row.data('id');
-                        if (id) {
-                            Swal.fire({
-                                title: "Are you sure?",
-                                text: "You won't be able to revert this!",
-                                icon: "warning",
-                                showCancelButton: true,
-                                confirmButtonText: "Yes, delete it!",
-                                cancelButtonText: "No, cancel!",
-                                reverseButtons: true
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    $.ajax({
-                                        url: 'delete-workorders.php',
-                                        type: 'POST',
-                                        data: {
-                                            id: id
-                                        },
-                                        success: function(response) {
-                                            row.remove();
-                                            Swal.fire("Deleted!", "Your project has been deleted.", "success");
-                                            window.location.href = 'page_workorders.php';
-                                        },
-                                        error: function(xhr, status, error) {
-                                            Swal.fire({
-                                                title: "Error!",
-                                                text: "Failed to delete record. Error: " + error,
-                                                icon: "error",
-                                                button: "OK",
-                                            });
-                                        }
-                                    });
-                                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                                    Swal.fire("Cancelled", "Your project is safe :)", "error");
+            const config_countries = {
+                type: 'bar',
+                data: data_countries,
+                options: {
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw;
+                                    const percentage = percentages[context.dataIndex] || 0;
+                                    return `${label}: ${value} (${percentage}%)`;
                                 }
-                            });
-                        } else {
-                            row.remove();
+                            }
                         }
                     }
+                }
+            };
 
-                    // Handle add new row button click
-                    $('#add-row-btn').on('click', function() {
-                        alert("Ajouter ca ");
-                        var newRow = `<tr data-id="">
-                            <td>
-                                <select class="form-control">
-                                    <?php foreach ($projects as $project) : ?>
-                                        <option value="<?php echo $project['id']; ?>"><?php echo htmlspecialchars($project['ProjectName']); ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                             </td>
-                            <td contenteditable="true"></td>
-                             <td contenteditable="true"></td>
-                            <td><input type="date"></td>
+            window.onload = function() {
+                const ctx_pie = document.getElementById('countries').getContext('2d');
+                new Chart(ctx_pie, config_countries);
+            };
 
-                            <td><input type="date"></td>
+            //- DONUT CHART -
+            const labels = <?php echo $labelsJSON; ?>;
+            const data = <?php echo $dataJSON; ?>;
 
-                            <td>
-                                <select class="form-control">
-                                    <option value="Planned">Planned</option>
-                                    <option value="Ongoing">Ongoing</option>
-                                    <option value="Completed">Completed</option>
-                                </select>
-                             </td>
-                            <td></td>
-                            <td></td>
-                             <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                             <td contenteditable="true"></td>
-                            <td contenteditable="true"></td>
-                            <td><input type="date"></td>
-                            <td><input type="date"></td>
-                            <td><input type="date"></td>
-                            <td><input type="date"></td>
-                            <td contenteditable="true"></td>
-                             <td>
-                                <select class="form-control">
-                                    <option value="High">High</option>
-                                    <option value="Medium">Medium</option>
-                                    <option value="Low">Low</option>
-                                </select>
-                             </td>
-                            <td><input type="text"></td>
-                            <td><input type="text"></td>
-                            <td></td>
-                             </td>
-                            <td><input type="text"></td>
-                            <td></td>
-                            <td>
-                                <button class="save-btn btn btn-sm px-0  py-0"><i class="fas fa-save"></i></button>
-                                <button class="delete-btn btn  btn-sm px-0 py-0"><i class="fas fa-trash"></i></button>
-                            </td>
-                        </tr>`;
-
-                        $('#actionsTable tbody').append(newRow);
-                    });
+            // Status
 
 
-                    $('#actionsTable tbody').on('click', '.save-btn', function() {
-                        var row = $(this).closest('tr');
-                        saveRow(row);
-                    });
 
-                    $('#actionsTable tbody').on('click', '.delete-btn', function() {
-                        var row = $(this).closest('tr');
-                        deleteRow(row);
-                    });
-                    document.getElementById('export-csv-btn').addEventListener('click', function() {
-                        window.location.href = 'export-csv.php';
-                    });
+            const data_headcount = {
+                labels: labels,
+                datasets: [{
+                    label: 'Status',
+                    data: data,
+                    fill: false,
+                    backgroundColor: ['#00a65a', '#f39c12', ' #00c0ef ', ],
+                    tension: 0.1
+                }]
+            };
 
+            const config_headcount = {
+                type: 'doughnut',
+                data: data_headcount,
+
+                options: {
+                    is3D: true,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw;
+                                    const percentage = percentages[context.dataIndex] || 0;
+                                    return `${label}: ${value} (${percentage}%)`;
+                                }
+                            }
+
+                        }
+
+                    }
+
+                }
+            };
+            const ctx_headcount = document.getElementById('donutChart');
+            new Chart(ctx_headcount, config_headcount);
+
+
+            $(document).ready(function() {
+
+                $('#actionsTable').DataTable({
+
+                    scrollCollapse: true,
+                    paging: true,
+                    info: true
                 });
-            </script>
+
+                function saveRow(row) {
+                    var id = row.data('id');
+                    var data = {
+                        ProjectID: row.find('td:eq(0) select').val(),
+                        WorkOrderNumber: row.find('td:eq(1)').text(),
+                        Description: row.find('td:eq(2)').text(),
+                        StartDate: row.find('td:eq(3) input').val(),
+                        EndDate: row.find('td:eq(4) input').val(),
+                        Status: row.find('td:eq(5) select').val(),
+                        // CreatedAt: row.find('td:eq(6) input').val(),
+                        // UpdatedAt: row.find('td:eq(7) input').val(),
+                        Country: row.find('td:eq(8)').text(),
+                        Plant: row.find('td:eq(9)').text(),
+                        STELLANTISRequester: row.find('td:eq(10)').text(),
+                        ALTENPilot: row.find('td:eq(11)').text(),
+                        ReceptionDateWO: row.find('td:eq(12) input').val(),
+                        DeadlineSTELLANTISWO: row.find('td:eq(13) input ').val(),
+                        StartOfProductionALTEN: row.find('td:eq(14) input').val(),
+                        DeliveryDate: row.find('td:eq(15) input').val(),
+                        ValidationCriteria: row.find('td:eq(16)').text(),
+                        Priority: row.find('td:eq(17) select').val(),
+                        NumberOfDeliverables: row.find('td:eq(18) input').val(),
+                        NumberOfValidatedDeliverablesRFT: row.find('td:eq(19) input').val(),
+                        RFT: row.find('td:eq(20)').text(),
+                        NumberOfValidatedDeliverablesOTD: row.find('td:eq(21) input').val(),
+                        OTD: row.find('td:eq(22)').text()
+                    };
+
+                    $.ajax({
+                        url: id ? 'update-workoders.php' : 'add-workorders.php',
+                        type: 'POST',
+                        data: {
+                            id: id,
+                            data: data
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                title: "Do you want to save the changes?",
+                                showDenyButton: true,
+                                showCancelButton: true,
+                                confirmButtonText: "Save",
+                                denyButtonText: `Don't save`
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    Swal.fire("Saved!", "", "success");
+                                    if (!id) {
+                                        row.attr('data-id', response); // Set the new ID from the response
+                                    }
+                                    window.location.href = 'page_workorders.php';
+                                } else if (result.isDenied) {
+                                    Swal.fire("Changes are not saved", "", "info");
+                                }
+                            });
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire({
+                                title: "Error!",
+                                text: "Failed to " + (id ? "update" : "add") + " record. Error: " + error,
+                                icon: "error",
+                                button: "OK",
+                            });
+                        }
+                    });
+                }
+
+                function deleteRow(row) {
+                    var id = row.data('id');
+                    if (id) {
+                        Swal.fire({
+                            title: "Are you sure?",
+                            text: "You won't be able to revert this!",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonText: "Yes, delete it!",
+                            cancelButtonText: "No, cancel!",
+                            reverseButtons: true
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $.ajax({
+                                    url: 'delete-workorders.php',
+                                    type: 'POST',
+                                    data: {
+                                        id: id
+                                    },
+                                    success: function(response) {
+                                        row.remove();
+                                        Swal.fire("Deleted!", "Your project has been deleted.", "success");
+                                        window.location.href = 'page_workorders.php';
+                                    },
+                                    error: function(xhr, status, error) {
+                                        Swal.fire({
+                                            title: "Error!",
+                                            text: "Failed to delete record. Error: " + error,
+                                            icon: "error",
+                                            button: "OK",
+                                        });
+                                    }
+                                });
+                            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                                Swal.fire("Cancelled", "Your project is safe :)", "error");
+                            }
+                        });
+                    } else {
+                        row.remove();
+                    }
+                }
+
+                // Handle add new row button click
+                $('#add-row-btn').on('click', function() {
+                    alert("Ajouter ca ");
+                    var newRow = `<tr data-id="">
+                <td>
+                    <select class="form-control">
+                        <?php foreach ($projects as $project) : ?>
+                            <option value="<?php echo $project['id']; ?>"><?php echo htmlspecialchars($project['ProjectName']); ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td><input type="date"></td>
+
+                <td><input type="date"></td>
+
+                <td>
+                    <select class="form-control">
+                        <option value="Planned">Planned</option>
+                        <option value="Ongoing">Ongoing</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </td>
+                <td></td>
+                <td></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td contenteditable="true"></td>
+                <td><input type="date"></td>
+                <td><input type="date"></td>
+                <td><input type="date"></td>
+                <td><input type="date"></td>
+                <td contenteditable="true"></td>
+                <td>
+                    <select class="form-control">
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </td>
+                <td><input type="text"></td>
+                <td><input type="text"></td>
+                <td></td>
+                </td>
+                <td><input type="text"></td>
+                <td></td>
+                <td>
+                    <button class="save-btn btn btn-sm px-0  py-0"><i class="fas fa-save"></i></button>
+                    <button class="delete-btn btn  btn-sm px-0 py-0"><i class="fas fa-trash"></i></button>
+                </td>
+            </tr>`;
+
+                    $('#actionsTable tbody').append(newRow);
+                });
+
+
+                $('#actionsTable tbody').on('click', '.save-btn', function() {
+                    var row = $(this).closest('tr');
+                    saveRow(row);
+                });
+
+                $('#actionsTable tbody').on('click', '.delete-btn', function() {
+                    var row = $(this).closest('tr');
+                    deleteRow(row);
+                });
+                document.getElementById('export-csv-btn').addEventListener('click', function() {
+                    window.location.href = 'export-csv.php';
+                });
+
+            });
+        </script>
 
 
 
 
-            </body>
-        </div>
+        </body>
     </div>
+</div>
 
 </html>
 <?php include '../../frames/footer_frame.php'; ?>

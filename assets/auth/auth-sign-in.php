@@ -65,7 +65,7 @@
                                     <div class="form-group">
                                         <label for="exampleInputEmail">Email :</label>
                                         <input type="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Votre adresse email" name="Email">
-                                      
+                                        <!-- <h5 id="emailcheck" style="color:red;">**Email is missing </h5> -->
                                     </div>
 
                                     <div class="form-group">
@@ -77,7 +77,9 @@
 
                                     <button type="submit" class="btn btn-primary btn-user btn-block">Login</button>
                                     <hr>
-                                   
+                                    <!-- <div class="text-center">
+                                        <a class="small" href="">Déjà inscrit(e) ? Inscription</a>
+                                    </div> -->
                                 </form>
 
 
@@ -87,6 +89,23 @@
                 </div>
             </div>
         </div>
+
+        <!-- Backend Bundle JavaScript -->
+        <script src="../../assets/js/backend-bundle.min.js"></script>
+        <!-- Table Treeview JavaScript -->
+        <script src="../../assets/js/table-treeview.js"></script>
+        <!-- Chart Custom JavaScript -->
+        <script src="../../assets/js/customizer.js"></script>
+        <!-- Chart Custom JavaScript -->
+        <script async src="../../assets/js/chart-custom.js"></script>
+        <!-- Chart Custom JavaScript -->
+        <script async src="../../assets/js/slider.js"></script>
+        <!-- app JavaScript -->
+        <script src="../../assets/js/app.js"></script>
+        <script src="../../assets/vendor/moment.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
+
         <script>
             $(document).ready(function() {
                 $("#success").hide(); //hide : qui va nous permettre de cacher des elements sur une page
@@ -116,24 +135,6 @@
                 });
             });
         </script>
-
-        <!-- Backend Bundle JavaScript -->
-        <script src="../../assets/js/backend-bundle.min.js"></script>
-        <!-- Table Treeview JavaScript -->
-        <script src="../../assets/js/table-treeview.js"></script>
-        <!-- Chart Custom JavaScript -->
-        <script src="../../assets/js/customizer.js"></script>
-        <!-- Chart Custom JavaScript -->
-        <script async src="../../assets/js/chart-custom.js"></script>
-        <!-- Chart Custom JavaScript -->
-        <script async src="../../assets/js/slider.js"></script>
-        <!-- app JavaScript -->
-        <script src="../../assets/js/app.js"></script>
-        <script src="../../assets/vendor/moment.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
-
-
     </body>
 
 </html>
